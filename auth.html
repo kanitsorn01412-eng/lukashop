@@ -1,96 +1,145 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Lukashop • เข้าสู่ระบบ / สมัครสมาชิก</title>
+  <link rel="icon" href="data:," />
   <style>
-    :root{--bg:#0f172a;--card:#111827;--txt:#e5e7eb;--muted:#94a3b8;--pri:#38bdf8;}
-    *{box-sizing:border-box;font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,sans-serif}
-    body{margin:0;background:var(--bg);color:var(--txt)}
-    .wrap{max-width:520px;margin:32px auto;padding:20px}
-    .brand{display:flex;gap:10px;align-items:center;margin-bottom:16px}
-    .brand b{font-size:22px}
+    :root { --bg:#0f172a; --card:#111827; --txt:#e5e7eb; --muted:#9ca3af; --pri:#38bdf8; }
+    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--txt);}
+    .wrap{max-width:640px;margin:40px auto;padding:0 16px;}
+    .brand{display:flex;align-items:center;gap:10px;margin-bottom:20px}
+    .brand .logo{font-size:24px}
     .card{background:var(--card);border:1px solid #1f2937;border-radius:14px;padding:18px}
-    .tabs{display:flex;background:#0b1220;border-radius:10px;padding:4px;margin-bottom:14px}
-    .tab{flex:1;text-align:center;padding:10px;border-radius:8px;color:var(--muted);cursor:pointer}
-    .tab.active{background:var(--pri);color:#001825;font-weight:700}
-    .field{display:flex;flex-direction:column;gap:6px;margin:10px 0}
-    label{color:var(--muted);font-size:13px}
-    input{padding:12px;border:1px solid #263244;background:#0b1220;color:var(--txt);border-radius:10px}
-    button{width:100%;padding:12px 14px;border:0;border-radius:10px;background:var(--pri);color:#001825;font-weight:700}
-    .hint{margin-top:10px;color:var(--muted);font-size:13px;text-align:center}
-    a{color:var(--pri);text-decoration:none}
-    .back{display:inline-block;margin-top:14px}
+    .tabs{display:flex;background:#0b1220;border-radius:10px;overflow:hidden;margin-bottom:14px}
+    .tabs button{flex:1;padding:12px 10px;background:transparent;color:var(--muted);border:none;font-weight:600}
+    .tabs button.active{background:var(--pri);color:#031522}
+    label{display:block;margin:10px 0 6px;color:var(--muted);font-size:14px}
+    input{width:100%;padding:12px;border-radius:10px;border:1px solid #223046;background:#0b1220;color:var(--txt)}
+    .row{display:flex;gap:10px}
+    .btn{width:100%;margin-top:16px;padding:12px 14px;border-radius:12px;border:none;background:var(--pri);color:#031522;font-weight:700}
+    .muted{color:var(--muted);font-size:12px;margin-top:10px}
+    .link{color:var(--pri);text-decoration:none}
+    .topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+    .badge{background:#0b1220;color:#a5f3fc;border:1px solid #164e63;border-radius:999px;padding:4px 10px;font-size:12px}
+    .hidden{display:none}
   </style>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
   <div class="wrap">
-    <div class="brand"><span style="font-size:22px">👾</span><b>Lukashop</b></div>
+    <div class="topbar">
+      <div class="brand"><div class="logo">👾</div><b>Lukashop</b></div>
+      <a class="link" href="index.html">← กลับหน้าหลัก</a>
+    </div>
 
     <div class="card">
       <div class="tabs">
-        <div class="tab active" id="t-login">เข้าสู่ระบบ</div>
-        <div class="tab" id="t-sign">สมัครสมาชิก</div>
+        <button id="tab-login" class="active" type="button">เข้าสู่ระบบ</button>
+        <button id="tab-sign" type="button">สมัครสมาชิก</button>
       </div>
 
-      <!-- เข้าสู่ระบบ -->
-      <form id="form-login">
-        <div class="field">
-          <label>อีเมล</label>
-          <input type="email" placeholder="you@example.com" required>
-        </div>
-        <div class="field">
-          <label>รหัสผ่าน</label>
-          <input type="password" placeholder="••••••••" required>
-        </div>
-        <button type="submit">เข้าสู่ระบบ</button>
-        <div class="hint">* ตัวอย่าง UI เท่านั้น ยังไม่เชื่อมต่อหลังบ้าน</div>
+      <form id="loginForm">
+        <label for="login-email">อีเมล</label>
+        <input id="login-email" type="email" placeholder="you@example.com" required />
+        <label for="login-pass">รหัสผ่าน</label>
+        <input id="login-pass" type="password" placeholder="••••••••" required />
+        <button class="btn" type="submit">เข้าสู่ระบบ</button>
       </form>
 
-      <!-- สมัครสมาชิก -->
-      <form id="form-sign" style="display:none">
-        <div class="field">
-          <label>ชื่อผู้ใช้</label>
-          <input type="text" placeholder="ตั้งชื่อผู้ใช้" required>
+      <form id="signForm" class="hidden">
+        <label for="sign-username">ชื่อผู้ใช้</label>
+        <input id="sign-username" type="text" placeholder="เช่น Luka2550" required />
+        <div class="row">
+          <div style="flex:1">
+            <label for="sign-email">อีเมล</label>
+            <input id="sign-email" type="email" placeholder="you@example.com" required />
+          </div>
+          <div style="flex:1">
+            <label for="sign-pass">รหัสผ่าน</label>
+            <input id="sign-pass" type="password" placeholder="อย่างน้อย 6 ตัวอักษร" minlength="6" required />
+          </div>
         </div>
-        <div class="field">
-          <label>อีเมล</label>
-          <input type="email" placeholder="you@example.com" required>
-        </div>
-        <div class="field">
-          <label>รหัสผ่าน</label>
-          <input type="password" placeholder="ตั้งรหัสผ่าน" required>
-        </div>
-        <button type="submit">สมัครสมาชิก</button>
-        <div class="hint">* ตัวอย่าง UI เท่านั้น</div>
+        <button class="btn" type="submit">สมัครสมาชิก</button>
+        <div class="muted">* จะส่งอีเมลยืนยัน (ถ้าตั้งค่าไว้) – ลองเช็คกล่องอีเมลของคุณ</div>
       </form>
+
+      <div id="status" class="muted" style="margin-top:12px"></div>
     </div>
 
-    <a class="back" href="index.html">← กลับหน้าหลัก</a>
+    <div class="muted">* เมื่อเข้าสู่ระบบสำเร็จ จะส่งคุณไปที่ <code>dashboard.html</code></div>
   </div>
 
   <script>
-    const tLogin = document.getElementById('t-login');
-    const tSign  = document.getElementById('t-sign');
-    const fLogin = document.getElementById('form-login');
-    const fSign  = document.getElementById('form-sign');
+    // ✅ ใช้ของนายตรงนี้
+    const SUPABASE_URL = "https://kadrnzxpgyrnfxvmjhvv.supabase.co";
+    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImthZHJuenhwZ3lybmZ4dm1qaHZ2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA3NTY4ODcsImV4cCI6MjA3NjMzMjg4N30.D0AqZvFbul6FbNIC1lJbgubil0Jq8hKPwIR6gnbWdxI";
 
-    tLogin.onclick = () => {
-      tLogin.classList.add('active'); tSign.classList.remove('active');
-      fLogin.style.display = '';      fSign.style.display = 'none';
-    };
-    tSign.onclick = () => {
-      tSign.classList.add('active');  tLogin.classList.remove('active');
-      fSign.style.display = '';       fLogin.style.display = 'none';
-    };
+    const client = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-    // กัน submit จริง – โชว์ alert แทน (เดโม่)
-    [fLogin, fSign].forEach(f => f.addEventListener('submit', e => {
+    const tabLogin = document.getElementById('tab-login');
+    const tabSign  = document.getElementById('tab-sign');
+    const loginForm = document.getElementById('loginForm');
+    const signForm  = document.getElementById('signForm');
+    const statusBox = document.getElementById('status');
+
+    function setTab(mode) {
+      if (mode === 'login') {
+        tabLogin.classList.add('active'); tabSign.classList.remove('active');
+        loginForm.classList.remove('hidden'); signForm.classList.add('hidden');
+      } else {
+        tabSign.classList.add('active'); tabLogin.classList.remove('active');
+        signForm.classList.remove('hidden'); loginForm.classList.add('hidden');
+      }
+      statusBox.textContent = "";
+    }
+    tabLogin.onclick = () => setTab('login');
+    tabSign.onclick  = () => setTab('sign');
+
+    (async () => {
+      const { data: { session } } = await client.auth.getSession();
+      if (session) location.href = "dashboard.html";
+    })();
+
+    loginForm.addEventListener('submit', async (e) => {
       e.preventDefault();
-      alert('เดโม่: ยังไม่ได้เชื่อมระบบหลังบ้าน');
-      location.href = 'shop.html'; // ลองพาไปหน้าร้าน
-    }));
+      statusBox.textContent = "กำลังเข้าสู่ระบบ...";
+      const email = document.getElementById('login-email').value.trim();
+      const password = document.getElementById('login-pass').value;
+      const { error } = await client.auth.signInWithPassword({ email, password });
+      if (error) {
+        statusBox.textContent = "❌ เข้าสู่ระบบไม่สำเร็จ: " + error.message;
+        return;
+      }
+      statusBox.textContent = "✅ สำเร็จ! กำลังพาไปหน้าแดชบอร์ด...";
+      setTimeout(() => location.href = "dashboard.html", 600);
+    });
+
+    signForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      statusBox.textContent = "กำลังสมัครสมาชิก...";
+      const username = document.getElementById('sign-username').value.trim();
+      const email = document.getElementById('sign-email').value.trim();
+      const password = document.getElementById('sign-pass').value;
+
+      const { data, error } = await client.auth.signUp({
+        email, password,
+        options: { data: { username } }
+      });
+
+      if (error) {
+        statusBox.textContent = "❌ สมัครไม่สำเร็จ: " + error.message;
+        return;
+      }
+
+      if (data.user && !data.user.confirmed_at) {
+        statusBox.textContent = "✅ สมัครสำเร็จ! ตรวจอีเมลเพื่อยืนยันก่อน แล้วค่อยเข้าสู่ระบบ";
+      } else {
+        statusBox.textContent = "✅ สมัครสำเร็จ! กำลังพาไปหน้าแดชบอร์ด...";
+        setTimeout(() => location.href = "dashboard.html", 600);
+      }
+    });
   </script>
 </body>
 </html>
