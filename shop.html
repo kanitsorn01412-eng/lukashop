@@ -5,90 +5,63 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Lukashop • ร้านค้า</title>
   <style>
-    :root{--bg:#0f172a;--card:#111827;--txt:#e5e7eb;--muted:#94a3b8;--pri:#38bdf8;--ok:#22c55e}
+    :root{--bg:#0f172a;--card:#111827;--txt:#e5e7eb;--muted:#94a3b8;--pri:#38bdf8}
     *{box-sizing:border-box;font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,sans-serif}
     body{margin:0;background:var(--bg);color:var(--txt)}
     header{position:sticky;top:0;background:#0b1220;border-bottom:1px solid #1f2937}
     .nav{max-width:980px;margin:auto;padding:12px 16px;display:flex;align-items:center;gap:12px}
     .nav b{font-size:18px}
     .spacer{flex:1}
-    .badge{background:#132033;border:1px solid #1f2a40;color:var(--muted);padding:6px 10px;border-radius:10px;font-size:13px}
-    .grid{max-width:980px;margin:18px auto;padding:0 16px;display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(240px,1fr))}
-    .card{background:var(--card);border:1px solid #1f2937;border-radius:14px;overflow:hidden;display:flex;flex-direction:column}
-    .thumb{aspect-ratio:16/9;background:#0b1220;display:flex;align-items:center;justify-content:center;color:#334155}
-    .body{padding:14px;display:flex;flex-direction:column;gap:8px}
-    .title{font-weight:700}
-    .muted{color:var(--muted);font-size:13px}
-    .row{display:flex;align-items:center;justify-content:space-between}
-    .price{font-weight:800}
-    .btn{display:inline-flex;justify-content:center;align-items:center;gap:8px;padding:10px 12px;border-radius:10px;border:0;font-weight:700;cursor:pointer;text-decoration:none}
-    .buy{background:var(--pri);color:#001825;width:100%}
-    .ok{color:var(--ok);font-weight:700}
-    a{color:var(--pri);text-decoration:none}
-    .toplinks{max-width:980px;margin:0 auto;padding:0 16px 14px;display:flex;gap:10px}
-    .toplinks a{font-size:14px}
+    .badge{background:#132033;border:1px solid #1f2a40;color:#94a3b8;padding:6px 10px;border-radius:10px;font-size:13px;text-decoration:none}
+    .wrap{max-width:980px;margin:18px auto;padding:0 16px}
+    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px}
+    .card{background:#111827;border:1px solid #1f2937;border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:8px}
+    .title{font-weight:800}
+    .muted{color:var(--muted)}
+    .btn{margin-top:auto;padding:10px 12px;border-radius:10px;background:var(--pri);color:#001825;border:0;font-weight:800;text-align:center;text-decoration:none}
   </style>
 </head>
 <body>
-  <header>
-    <div class="nav">
-      <div>👾</div><b>Lukashop</b>
-      <div class="spacer"></div>
-      <span class="badge" id="cart-badge">ตะกร้า (เดโม่) • 0 ชิ้น</span>
-    </div>
-  </header>
-
-  <div class="toplinks">
-    <a href="index.html">← กลับหน้าหลัก</a>
-    <span class="muted">|</span>
-    <a href="auth.html">เข้าสู่ระบบ/สมัคร</a>
+<header>
+  <div class="nav">
+    <div>👾</div><b>Lukashop</b>
+    <div class="spacer"></div>
+    <a href="cart.html" class="badge" id="cart-badge">ตะกร้า (เดโม่) • 0 ชิ้น</a>
   </div>
+</header>
 
-  <div class="grid">
-    <div class="card">
-      <div class="thumb">ภาพสินค้า</div>
-      <div class="body">
-        <div class="title">Bilibili Premium / 30 วัน</div>
-        <div class="muted">ดูการ์ตูน/อนิเมะ • Full HD</div>
-        <div class="row">
-          <div class="price">฿29.00</div>
-          <div class="ok">พร้อมจำหน่าย</div>
-        </div>
-        <a class="btn buy" href="product.html?sku=bilibili">ดูรายละเอียด/สั่งซื้อ</a>
-      </div>
-    </div>
+<div class="wrap">
+  <h2 style="margin:0 0 12px">สินค้า</h2>
+  <div class="grid" id="grid"></div>
+</div>
 
-    <div class="card">
-      <div class="thumb">ภาพสินค้า</div>
-      <div class="body">
-        <div class="title">VIU Premium / 30 วัน</div>
-        <div class="muted">ซีรีส์/บันเทิง • Full HD</div>
-        <div class="row">
-          <div class="price">฿29.00</div>
-          <div class="ok">พร้อมจำหน่าย</div>
-        </div>
-        <a class="btn buy" href="product.html?sku=viu">ดูรายละเอียด/สั่งซื้อ</a>
-      </div>
-    </div>
+<script>
+  // สินค้าทดสอบ
+  const products = [
+    { sku:'bili30',  name:'Bilibili Premium / 30 วัน', price:29,  desc:'ดูการ์ตูน/อนิเมะ • Full HD' },
+    { sku:'viu30',   name:'VIU Premium / 30 วัน',      price:29,  desc:'ซีรีส์/บันเทิง • Full HD' },
+    { sku:'iqiyi30', name:'iQIYI VIP / 30 วัน',         price:29,  desc:'หนัง/ซีรีส์ • ไม่มีโฆษณา' },
+  ];
 
-    <div class="card">
-      <div class="thumb">ภาพสินค้า</div>
-      <div class="body">
-        <div class="title">TrueID+ / 30 วัน</div>
-        <div class="muted">หนัง/ซีรีส์ • Full HD</div>
-        <div class="row">
-          <div class="price">฿39.00</div>
-          <div class="ok">พร้อมจำหน่าย</div>
-        </div>
-        <a class="btn buy" href="product.html?sku=trueid">ดูรายละเอียด/สั่งซื้อ</a>
-      </div>
-    </div>
-  </div>
+  const grid = document.getElementById('grid');
+  const badge = document.getElementById('cart-badge');
 
-  <script>
-    // โชว์จำนวนชิ้นในตะกร้า (เดโม่)
-    const count = Number(localStorage.getItem('demoCartCount') || 0);
-    document.getElementById('cart-badge').textContent = `ตะกร้า (เดโม่) • ${count} ชิ้น`;
-  </script>
+  const loadCount = () => Number(localStorage.getItem('demoCartCount') || 0);
+  const updateBadge = () => { badge.textContent = `ตะกร้า (เดโม่) • ${loadCount()} ชิ้น`; };
+
+  products.forEach(p=>{
+    const el = document.createElement('div');
+    el.className = 'card';
+    el.innerHTML = `
+      <div class="title">${p.name}</div>
+      <div class="muted">${p.desc}</div>
+      <div>฿${p.price.toFixed(2)}</div>
+      <a class="btn" href="product.html?sku=${encodeURIComponent(p.sku)}">ดูรายละเอียด/สั่งซื้อ</a>
+    `;
+    grid.appendChild(el);
+  });
+
+  updateBadge();
+</script>
 </body>
 </html>
