@@ -21,7 +21,7 @@
     .muted{color:var(--muted);font-size:13px}
     .row{display:flex;align-items:center;justify-content:space-between}
     .price{font-weight:800}
-    .btn{display:inline-flex;justify-content:center;align-items:center;gap:8px;padding:10px 12px;border-radius:10px;border:0;font-weight:700;cursor:pointer}
+    .btn{display:inline-flex;justify-content:center;align-items:center;gap:8px;padding:10px 12px;border-radius:10px;border:0;font-weight:700;cursor:pointer;text-decoration:none}
     .buy{background:var(--pri);color:#001825;width:100%}
     .ok{color:var(--ok);font-weight:700}
     a{color:var(--pri);text-decoration:none}
@@ -34,7 +34,7 @@
     <div class="nav">
       <div>👾</div><b>Lukashop</b>
       <div class="spacer"></div>
-      <span class="badge">ตะกร้า (เดโม่) • 0 ชิ้น</span>
+      <span class="badge" id="cart-badge">ตะกร้า (เดโม่) • 0 ชิ้น</span>
     </div>
   </header>
 
@@ -45,7 +45,6 @@
   </div>
 
   <div class="grid">
-    <!-- สินค้าตัวอย่าง 1 -->
     <div class="card">
       <div class="thumb">ภาพสินค้า</div>
       <div class="body">
@@ -55,11 +54,10 @@
           <div class="price">฿29.00</div>
           <div class="ok">พร้อมจำหน่าย</div>
         </div>
-        <button class="btn buy" onclick="demoBuy('Bilibili Premium / 30 วัน')">เลือกซื้อ (เดโม่)</button>
+        <a class="btn buy" href="product.html?sku=bilibili">ดูรายละเอียด/สั่งซื้อ</a>
       </div>
     </div>
 
-    <!-- ตัวอย่าง 2 -->
     <div class="card">
       <div class="thumb">ภาพสินค้า</div>
       <div class="body">
@@ -69,11 +67,10 @@
           <div class="price">฿29.00</div>
           <div class="ok">พร้อมจำหน่าย</div>
         </div>
-        <button class="btn buy" onclick="demoBuy('VIU Premium / 30 วัน')">เลือกซื้อ (เดโม่)</button>
+        <a class="btn buy" href="product.html?sku=viu">ดูรายละเอียด/สั่งซื้อ</a>
       </div>
     </div>
 
-    <!-- ตัวอย่าง 3 -->
     <div class="card">
       <div class="thumb">ภาพสินค้า</div>
       <div class="body">
@@ -83,15 +80,15 @@
           <div class="price">฿39.00</div>
           <div class="ok">พร้อมจำหน่าย</div>
         </div>
-        <button class="btn buy" onclick="demoBuy('TrueID+ / 30 วัน')">เลือกซื้อ (เดโม่)</button>
+        <a class="btn buy" href="product.html?sku=trueid">ดูรายละเอียด/สั่งซื้อ</a>
       </div>
     </div>
   </div>
 
   <script>
-    function demoBuy(name){
-      alert('เดโม่: คุณเลือก '+ name + ' (ยังไม่เชื่อมระบบชำระเงิน)');
-    }
+    // โชว์จำนวนชิ้นในตะกร้า (เดโม่)
+    const count = Number(localStorage.getItem('demoCartCount') || 0);
+    document.getElementById('cart-badge').textContent = `ตะกร้า (เดโม่) • ${count} ชิ้น`;
   </script>
 </body>
 </html>
