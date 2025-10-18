@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Lukashop • รายละเอียดสินค้า</title>
+  <style>
+    :root{--bg:#0f172a;--card:#111827;--txt:#e5e7eb;--muted:#94a3b8;--pri:#38bdf8}
+    *{box-sizing:border-box;font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,sans-serif}
+    body{margin:0;background:var(--bg);color:var(--txt)}
+    header{position:sticky;top:0;background:#0b1220;border-bottom:1px solid #1f2937}
+    .nav{max-width:980px;margin:auto;padding:12px 16px;display:flex;align-items:center;gap:12px}
+    .nav b{font-size:18px}
+    .spacer{flex:1}
+    .badge{background:#132033;border:1px solid #1f2a40;color:#94a3b8;padding:6px 10px;border-radius:10px;font-size:13px}
+    .wrap{max-width:980px;margin:18px auto;padding:0 16px}
+    .card{background:#111827;border:1px solid #1f2937;border-radius:14px;padding:16px;display:grid;gap:14px;grid-template-columns:1fr 1.2fr}
+    .thumb{aspect-ratio:16/9;background:#0b1220;display:flex;align-items:center;justify-content:center;color:#334155;border-radius:10px}
+    h1{margin:0;font-size:22px}
+    .muted{color:var(--muted);font-size:14px}
+    .price{font-weight:800;font-size:20px;margin:8px 0}
+    .qty{display:flex;align-items:center;gap:8px}
+    input[type=number]{width:90px;padding:10px;border-radius:10px;border:1px solid #263244;background:#0b1220;color:var(--txt)}
+    .btn{padding:12px 14px;border-radius:10px;border:0;font-weight:700;background:var(--pri);color:#001825;cursor:pointer}
+    a{color:var(--pri);text-decoration:none}
+    @media (max-width:800px){.card{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="nav">
+      <div>👾</div><b>Lukashop</b>
+      <div class="spacer"></div>
+      <span class="badge" id="cart-badge">ตะกร้า (เดโม่) • 0 ชิ้น</span>
+    </div>
+  </header>
+
+  <div class="wrap">
+    <a href="shop.html">← กลับร้านค้า</a>
+    <div class="card" id="card">
+      <div class="thumb" id="thumb">ภาพสินค้า</div>
+      <div>
+        <h1 id="title">สินค้า</h1>
+        <div class="muted" id="desc">คำอธิบายสินค้า</div>
+        <div class="price" id="price">฿0.00</div>
+
+        <div class="qty">
+          <label>จำนวน</label>
+          <input id="qty" type="number" min="1" value="1" />
+        </div>
+
+        <p class="muted">ราคารวม: <b id="total">฿0.00</b></p>
+        <button class="btn" id="add">เพิ่มลงตะกร้า (เดโม่)</button>
+        <p class="muted">* หน้านี้เป็นเดโม่ ยังไม่เชื่อมต่อการชำระเงินจริง</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // สินค้าตัวอย่าง (ฐานข้อมูลเล็กๆ ในหน้า)
+    const catalog = {
+      bilibili: { name:'Bilibili Premium / 30 วัน', price:29, desc:'แอปดูการ์ตูน/อนิเมะ • Full HD' },
+      viu:      { name:'VIU Premium / 30 วัน',     price:29, desc:'ซีรีส์/บันเทิง • Full HD' },
+      trueid:   { name:'TrueID+ / 30 วัน',          price:39, desc:'หนัง/ซีรีส์ • Full HD' },
+    };
+
+    // อ่าน sku จาก query string
+    const params = new URLSearchParams(location.search);
+    const sku = params.get('sku') || 'bilibili';
+    const item = catalog[sku] || catalog.bilibili;
+
+    // ผูกข้อมูลกับ UI
+    document.getElementById('title').textContent = item.name;
+    document.getElementById('desc').textContent  = item.desc;
+    document.getElementById('price').textContent = `฿${item.price.toFixed(2)}`;
+
+    const qtyEl = document.getElementById('qty');
+    const totalEl = document.getElementById('total');
+
+    const calc = () => {
+      const q = Math.max(1, Number(qtyEl.value || 1));
+      totalEl.textContent = `฿${(q * item.price).toFixed(2)}`;
+    };
+    qtyEl.addEventListener('input', calc);
+    calc();
+
+    // เดโม่ตะกร้า: เก็บจำนวนชิ้นรวมไว้ใน localStorage
+    const updateBadge = () => {
+      const count = Number(localStorage.getItem('demoCartCount') || 0);
+      document.getElementById('cart-badge').textContent = `ตะกร้า (เดโม่) • ${count} ชิ้น`;
+    };
+    updateBadge();
+
+    document.getElementById('add').onclick = () => {
+      const addQty = Math.max(1, Number(qtyEl.value || 1));
+      const current = Number(localStorage.getItem('demoCartCount') || 0);
+      localStorage.setItem('demoCartCount', current + addQty);
+      updateBadge();
+      alert(`เพิ่ม ${item.name} x${addQty} ลงตะกร้า (เดโม่) แล้ว!`);
+    };
+  </script>
+</body>
+</html>
