@@ -1,51 +1,53 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="th">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>แดชบอร์ด</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Lukashop • Dashboard</title>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
-    body{font-family:sans-serif;background:#0f172a;color:#e2e8f0;min-height:100dvh;padding:24px}
-    .wrap{max-width:720px;margin:0 auto}
-    .card{background:#111827;border-radius:12px;padding:18px}
-    button{padding:10px 14px;border:0;border-radius:8px;background:#fda4af;color:#111827;font-weight:700}
-    a{color:#93c5fd}
+    body{margin:0;font-family:system-ui,Segoe UI,Roboto,sans-serif;background:#0f172a;color:#e5e7eb}
+    .wrap{max-width:900px;margin:40px auto;padding:0 16px}
+    .top{display:flex;justify-content:space-between;align-items:center}
+    .btn{background:#38bdf8;color:#031522;border:none;border-radius:10px;padding:10px 14px;font-weight:700}
+    .card{margin-top:16px;background:#111827;border:1px solid #1f2937;border-radius:14px;padding:18px}
+    a{color:#38bdf8;text-decoration:none}
   </style>
 </head>
 <body>
   <div class="wrap">
-    <h1>แดชบอร์ด</h1>
-    <div class="card">
-      <p id="hello">กำลังโหลด...</p>
-      <div style="display:flex;gap:10px;margin-top:12px">
-        <button id="logoutBtn">ออกจากระบบ</button>
-        <a href="index.html">กลับหน้าแรก</a>
+    <div class="top">
+      <h2>👾 Lukashop — Dashboard</h2>
+      <div>
+        <a href="shop.html">ไปหน้าสินค้า</a>
+        <button id="logout" class="btn" style="margin-left:10px">ออกจากระบบ</button>
       </div>
     </div>
+
+    <div id="info" class="card">กำลังตรวจสอบบัญชีผู้ใช้...</div>
   </div>
 
   <script>
-    const client = supabase.createClient(
-      "https://kadrnzxpgyrnfxvmjhvv.supabase.co",
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImthZHJuenhwZ3lybmZ4dm1qaHZ2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA3NTY4ODcsImV4cCI6MjA3NjMzMjg4N30.D0AqZvFbul6FbNIC1lJbgubil0Jq8hKPwIR6gnbWdxI"
-    );
+    const SUPABASE_URL = "https://kadrnzxpgyrnfxvmjhvv.supabase.co";
+    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImthZHJuenhwZ3lybmZ4dm1qaHZ2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA3NTY4ODcsImV4cCI6MjA3NjMzMjg4N30.D0AqZvFbul6FbNIC1lJbgubil0Jq8hKPwIR6gnbWdxI";
+    const client = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-    (async ()=>{
-      const { data } = await client.auth.getUser();
-      const user = data.user;
-      if(!user){
-        // ยังไม่ล็อกอิน เด้งกลับหน้า auth
-        location.replace('auth.html');
+    (async () => {
+      const { data: { session } } = await client.auth.getSession();
+      const info = document.getElementById('info');
+      if (!session) {
+        info.innerHTML = "❌ ยังไม่เข้าสู่ระบบ — <a href='auth.html'>ไปเข้าสู่ระบบ</a>";
         return;
       }
-      document.getElementById('hello').textContent = `สวัสดี ${user.email}`;
+      const user = session.user;
+      const uname = user.user_metadata?.username || "(ไม่มีชื่อผู้ใช้)";
+      info.innerHTML = `✅ เข้าสู่ระบบแล้ว<br>อีเมล: <b>${user.email}</b><br>ชื่อผู้ใช้: <b>${uname}</b>`;
     })();
 
-    document.getElementById('logoutBtn').addEventListener('click', async ()=>{
+    document.getElementById('logout').onclick = async () => {
       await client.auth.signOut();
-      location.href = 'auth.html';
-    });
+      location.href = "auth.html";
+    };
   </script>
 </body>
 </html>
