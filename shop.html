@@ -1,135 +1,97 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="th">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>Lukashop — สินค้า</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Lukashop • ร้านค้า</title>
   <style>
-    :root { --bg:#0f172a; --panel:#111827; --muted:#94a3b8; --text:#e2e8f0; --brand:#38bdf8; --border:#1f2937; }
-    *{box-sizing:border-box}
-    body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui, -apple-system, Segoe UI, Roboto, sans-serif}
-    header{position:sticky;top:0;background:rgba(17,24,39,.75);backdrop-filter:blur(10px);border-bottom:1px solid var(--border)}
-    .container{max-width:1100px;margin:0 auto;padding:14px 16px}
-    .nav{display:flex;gap:10px;align-items:center;justify-content:space-between}
-    .brand{font-weight:800;color:var(--brand);letter-spacing:.3px}
-    .actions a, .actions button{color:var(--text);text-decoration:none;border:1px solid var(--border);background:#0b1220;padding:8px 12px;border-radius:10px}
-    .grid{display:grid;grid-template-columns:repeat(1,minmax(0,1fr));gap:14px}
-    @media(min-width:640px){.grid{grid-template-columns:repeat(2,1fr)}}
-    @media(min-width:960px){.grid{grid-template-columns:repeat(3,1fr)}}
-    .card{background:var(--panel);border:1px solid var(--border);border-radius:14px;overflow:hidden;display:flex;flex-direction:column}
-    .thumb{aspect-ratio:16/9;background:#0b1220;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:13px}
-    .body{padding:12px 14px;display:flex;flex-direction:column;gap:8px}
+    :root{--bg:#0f172a;--card:#111827;--txt:#e5e7eb;--muted:#94a3b8;--pri:#38bdf8;--ok:#22c55e}
+    *{box-sizing:border-box;font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,sans-serif}
+    body{margin:0;background:var(--bg);color:var(--txt)}
+    header{position:sticky;top:0;background:#0b1220;border-bottom:1px solid #1f2937}
+    .nav{max-width:980px;margin:auto;padding:12px 16px;display:flex;align-items:center;gap:12px}
+    .nav b{font-size:18px}
+    .spacer{flex:1}
+    .badge{background:#132033;border:1px solid #1f2a40;color:var(--muted);padding:6px 10px;border-radius:10px;font-size:13px}
+    .grid{max-width:980px;margin:18px auto;padding:0 16px;display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(240px,1fr))}
+    .card{background:var(--card);border:1px solid #1f2937;border-radius:14px;overflow:hidden;display:flex;flex-direction:column}
+    .thumb{aspect-ratio:16/9;background:#0b1220;display:flex;align-items:center;justify-content:center;color:#334155}
+    .body{padding:14px;display:flex;flex-direction:column;gap:8px}
     .title{font-weight:700}
     .muted{color:var(--muted);font-size:13px}
-    .price{color:#86efac;font-weight:800}
-    .row{display:flex;gap:8px;align-items:center;justify-content:space-between;margin-top:6px}
-    .btn{border:0;border-radius:10px;padding:10px 12px;font-weight:700;cursor:pointer}
-    .ghost{background:transparent;border:1px solid var(--border);color:var(--text)}
-    .primary{background:var(--brand);color:#0f172a}
-    .toolbar{display:flex;gap:8px;margin:14px 0}
-    .search{flex:1;border:1px solid var(--border);background:#0b1220;color:var(--text);padding:10px;border-radius:10px}
-    .select{border:1px solid var(--border);background:#0b1220;color:var(--text);padding:10px;border-radius:10px}
-    footer{color:var(--muted);text-align:center;padding:20px}
-    .badge{font-size:12px;border:1px solid var(--border);padding:2px 8px;border-radius:999px}
-    .soldout{opacity:.55;filter:grayscale(35%)}
+    .row{display:flex;align-items:center;justify-content:space-between}
+    .price{font-weight:800}
+    .btn{display:inline-flex;justify-content:center;align-items:center;gap:8px;padding:10px 12px;border-radius:10px;border:0;font-weight:700;cursor:pointer}
+    .buy{background:var(--pri);color:#001825;width:100%}
+    .ok{color:var(--ok);font-weight:700}
+    a{color:var(--pri);text-decoration:none}
+    .toplinks{max-width:980px;margin:0 auto;padding:0 16px 14px;display:flex;gap:10px}
+    .toplinks a{font-size:14px}
   </style>
 </head>
 <body>
-<header>
-  <div class="container nav">
-    <div class="brand">Lukashop</div>
-    <div class="actions">
-      <a href="index.html">หน้าแรก</a>
-      <a href="auth.html">เข้าสู่ระบบ/สมัคร</a>
+  <header>
+    <div class="nav">
+      <div>👾</div><b>Lukashop</b>
+      <div class="spacer"></div>
+      <span class="badge">ตะกร้า (เดโม่) • 0 ชิ้น</span>
+    </div>
+  </header>
+
+  <div class="toplinks">
+    <a href="index.html">← กลับหน้าหลัก</a>
+    <span class="muted">|</span>
+    <a href="auth.html">เข้าสู่ระบบ/สมัคร</a>
+  </div>
+
+  <div class="grid">
+    <!-- สินค้าตัวอย่าง 1 -->
+    <div class="card">
+      <div class="thumb">ภาพสินค้า</div>
+      <div class="body">
+        <div class="title">Bilibili Premium / 30 วัน</div>
+        <div class="muted">ดูการ์ตูน/อนิเมะ • Full HD</div>
+        <div class="row">
+          <div class="price">฿29.00</div>
+          <div class="ok">พร้อมจำหน่าย</div>
+        </div>
+        <button class="btn buy" onclick="demoBuy('Bilibili Premium / 30 วัน')">เลือกซื้อ (เดโม่)</button>
+      </div>
+    </div>
+
+    <!-- ตัวอย่าง 2 -->
+    <div class="card">
+      <div class="thumb">ภาพสินค้า</div>
+      <div class="body">
+        <div class="title">VIU Premium / 30 วัน</div>
+        <div class="muted">ซีรีส์/บันเทิง • Full HD</div>
+        <div class="row">
+          <div class="price">฿29.00</div>
+          <div class="ok">พร้อมจำหน่าย</div>
+        </div>
+        <button class="btn buy" onclick="demoBuy('VIU Premium / 30 วัน')">เลือกซื้อ (เดโม่)</button>
+      </div>
+    </div>
+
+    <!-- ตัวอย่าง 3 -->
+    <div class="card">
+      <div class="thumb">ภาพสินค้า</div>
+      <div class="body">
+        <div class="title">TrueID+ / 30 วัน</div>
+        <div class="muted">หนัง/ซีรีส์ • Full HD</div>
+        <div class="row">
+          <div class="price">฿39.00</div>
+          <div class="ok">พร้อมจำหน่าย</div>
+        </div>
+        <button class="btn buy" onclick="demoBuy('TrueID+ / 30 วัน')">เลือกซื้อ (เดโม่)</button>
+      </div>
     </div>
   </div>
-</header>
 
-<main class="container">
-  <h2 style="margin:12px 0 6px">สินค้า</h2>
-  <div class="toolbar">
-    <input id="q" class="search" placeholder="ค้นหาชื่อสินค้า เช่น viu, bilibili, trueid">
-    <select id="sort" class="select">
-      <option value="new">เรียง: มาใหม่</option>
-      <option value="priceAsc">ราคาต่ำ → สูง</option>
-      <option value="priceDesc">ราคาสูง → ต่ำ</option>
-    </select>
-  </div>
-
-  <div id="grid" class="grid"></div>
-  <p id="empty" class="muted" style="display:none;margin:8px 4px">ไม่พบสินค้า</p>
-</main>
-
-<footer>© 2025 Lukashop • demo UI</footer>
-
-<script>
-  // สินค้าทดลอง (แก้/เพิ่มได้ตามใจ)
-  const PRODUCTS = [
-    { id:'p1', name:'Bilibili Premium 30 วัน', price:29, stock:12, tag:'สตรีมมิ่ง', img:'BILIBILI' },
-    { id:'p2', name:'TrueID Premium 30 วัน',  price:39, stock:0,  tag:'สตรีมมิ่ง', img:'TRUEID'   },
-    { id:'p3', name:'VIU Premium 30 วัน',     price:29, stock:7,  tag:'สตรีมมิ่ง', img:'VIU'     },
-    { id:'p4', name:'Riot Points (LOL) 100',  price:59, stock:5,  tag:'เกม',       img:'LOL'     },
-    { id:'p5', name:'Steam Wallet TH 50',     price:55, stock:2,  tag:'วอลเล็ต',   img:'STEAM'   },
-    { id:'p6', name:'Garena Shells 50',       price:49, stock:0,  tag:'เกม',       img:'GARENA'  },
-  ];
-
-  const grid = document.getElementById('grid');
-  const empty = document.getElementById('empty');
-  const q = document.getElementById('q');
-  const sort = document.getElementById('sort');
-
-  let state = { q:'', sort:'new' };
-
-  function render(){
-    const term = state.q.toLowerCase().trim();
-    let list = PRODUCTS.filter(p => !term || p.name.toLowerCase().includes(term));
-
-    if(state.sort==='priceAsc') list.sort((a,b)=>a.price-b.price);
-    else if(state.sort==='priceDesc') list.sort((a,b)=>b.price-a.price);
-    // 'new' = ไม่เรียงพิเศษ
-
-    grid.innerHTML = '';
-    if(list.length===0){ empty.style.display='block'; return; }
-    empty.style.display='none';
-
-    list.forEach(p=>{
-      const card = document.createElement('div');
-      card.className = 'card ' + (p.stock<=0 ? 'soldout':'');
-      card.innerHTML = `
-        <div class="thumb">${p.img}</div>
-        <div class="body">
-          <div class="row">
-            <div class="title">${p.name}</div>
-            <span class="badge">${p.tag}</span>
-          </div>
-          <div class="muted">สต็อก: ${p.stock>0 ? p.stock : 'หมด'}</div>
-          <div class="row">
-            <div class="price">฿ ${p.price.toFixed(2)}</div>
-            <div>
-              <button class="btn ghost" onclick="viewDetail('${p.id}')">รายละเอียด</button>
-              <button class="btn primary" ${p.stock<=0?'disabled':''} onclick="fakeBuy('${p.id}')">${p.stock<=0?'หมด':'สั่งซื้อ'}</button>
-            </div>
-          </div>
-        </div>
-      `;
-      grid.appendChild(card);
-    });
-  }
-
-  function viewDetail(id){
-    const p = PRODUCTS.find(x=>x.id===id);
-    alert(`${p.name}\nราคา: ฿${p.price.toFixed(2)}\nสต็อก: ${p.stock>0?p.stock:'หมด'}\n\n(เดโม: ยังไม่ผูกจ่าย)`);
-  }
-
-  function fakeBuy(id){
-    const p = PRODUCTS.find(x=>x.id===id);
-    alert(`เดโมสั่งซื้อ: ${p.name} • ฿${p.price.toFixed(2)}\n(ตอนนี้แค่ตัวอย่าง ดูหน้าตาเฉย ๆ)`);
-  }
-
-  q.addEventListener('input', e=>{ state.q = e.target.value; render(); });
-  sort.addEventListener('change', e=>{ state.sort = e.target.value; render(); });
-
-  render();
-</script>
+  <script>
+    function demoBuy(name){
+      alert('เดโม่: คุณเลือก '+ name + ' (ยังไม่เชื่อมระบบชำระเงิน)');
+    }
+  </script>
 </body>
 </html>
