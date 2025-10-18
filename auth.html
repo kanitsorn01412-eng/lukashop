@@ -1,100 +1,96 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="th">
 <head>
-  <meta charset="utf-8" />
+  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>เข้าสู่ระบบ / สมัครสมาชิก</title>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <title>Lukashop • เข้าสู่ระบบ / สมัครสมาชิก</title>
   <style>
-    body{font-family:sans-serif;background:#0f172a;color:#e2e8f0;display:flex;min-height:100dvh;align-items:center;justify-content:center}
-    .card{background:#111827;padding:24px 20px;border-radius:12px;max-width:420px;width:92%}
-    h1{margin:0 0 12px;color:#93c5fd}
-    label{display:block;margin:10px 0 4px}
-    input{width:100%;padding:10px;border-radius:8px;border:1px solid #334155;background:#0b1220;color:#e2e8f0}
-    button{margin-top:14px;width:100%;padding:12px;border:0;border-radius:10px;background:#38bdf8;color:#0b1220;font-weight:700}
-    .alt{margin-top:10px;text-align:center}
-    a{color:#93c5fd}
-    .error{color:#fca5a5;margin-top:8px}
-    .ok{color:#86efac;margin-top:8px}
-    .switch{margin-top:10px;font-size:14px;text-align:center}
+    :root{--bg:#0f172a;--card:#111827;--txt:#e5e7eb;--muted:#94a3b8;--pri:#38bdf8;}
+    *{box-sizing:border-box;font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,sans-serif}
+    body{margin:0;background:var(--bg);color:var(--txt)}
+    .wrap{max-width:520px;margin:32px auto;padding:20px}
+    .brand{display:flex;gap:10px;align-items:center;margin-bottom:16px}
+    .brand b{font-size:22px}
+    .card{background:var(--card);border:1px solid #1f2937;border-radius:14px;padding:18px}
+    .tabs{display:flex;background:#0b1220;border-radius:10px;padding:4px;margin-bottom:14px}
+    .tab{flex:1;text-align:center;padding:10px;border-radius:8px;color:var(--muted);cursor:pointer}
+    .tab.active{background:var(--pri);color:#001825;font-weight:700}
+    .field{display:flex;flex-direction:column;gap:6px;margin:10px 0}
+    label{color:var(--muted);font-size:13px}
+    input{padding:12px;border:1px solid #263244;background:#0b1220;color:var(--txt);border-radius:10px}
+    button{width:100%;padding:12px 14px;border:0;border-radius:10px;background:var(--pri);color:#001825;font-weight:700}
+    .hint{margin-top:10px;color:var(--muted);font-size:13px;text-align:center}
+    a{color:var(--pri);text-decoration:none}
+    .back{display:inline-block;margin-top:14px}
   </style>
 </head>
 <body>
-  <div class="card">
-    <h1>เข้าสู่ระบบ / สมัครสมาชิก</h1>
-    <p style="margin:0 0 14px">กรอกอีเมลและรหัสผ่านของคุณ</p>
+  <div class="wrap">
+    <div class="brand"><span style="font-size:22px">👾</span><b>Lukashop</b></div>
 
-    <label>อีเมล</label>
-    <input id="email" type="email" placeholder="you@email.com" />
+    <div class="card">
+      <div class="tabs">
+        <div class="tab active" id="t-login">เข้าสู่ระบบ</div>
+        <div class="tab" id="t-sign">สมัครสมาชิก</div>
+      </div>
 
-    <label>รหัสผ่าน</label>
-    <input id="password" type="password" placeholder="อย่างน้อย 6 ตัวอักษร" />
+      <!-- เข้าสู่ระบบ -->
+      <form id="form-login">
+        <div class="field">
+          <label>อีเมล</label>
+          <input type="email" placeholder="you@example.com" required>
+        </div>
+        <div class="field">
+          <label>รหัสผ่าน</label>
+          <input type="password" placeholder="••••••••" required>
+        </div>
+        <button type="submit">เข้าสู่ระบบ</button>
+        <div class="hint">* ตัวอย่าง UI เท่านั้น ยังไม่เชื่อมต่อหลังบ้าน</div>
+      </form>
 
-    <button id="submitBtn">เข้าสู่ระบบ</button>
-
-    <div id="msg"></div>
-
-    <div class="switch">
-      <span id="switchText">ยังไม่มีบัญชี? </span>
-      <a href="#" id="switchLink">สมัครสมาชิก</a>
+      <!-- สมัครสมาชิก -->
+      <form id="form-sign" style="display:none">
+        <div class="field">
+          <label>ชื่อผู้ใช้</label>
+          <input type="text" placeholder="ตั้งชื่อผู้ใช้" required>
+        </div>
+        <div class="field">
+          <label>อีเมล</label>
+          <input type="email" placeholder="you@example.com" required>
+        </div>
+        <div class="field">
+          <label>รหัสผ่าน</label>
+          <input type="password" placeholder="ตั้งรหัสผ่าน" required>
+        </div>
+        <button type="submit">สมัครสมาชิก</button>
+        <div class="hint">* ตัวอย่าง UI เท่านั้น</div>
+      </form>
     </div>
 
-    <div class="alt">
-      <a href="index.html">← กลับหน้าแรก</a>
-    </div>
+    <a class="back" href="index.html">← กลับหน้าหลัก</a>
   </div>
 
   <script>
-    const SUPABASE_URL = "https://kadrnzxpgyrnfxvmjhvv.supabase.co";
-    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImthZHJuenhwZ3lybmZ4dm1qaHZ2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA3NTY4ODcsImV4cCI6MjA3NjMzMjg4N30.D0AqZvFbul6FbNIC1lJbgubil0Jq8hKPwIR6gnbWdxI";
-    const client = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    const tLogin = document.getElementById('t-login');
+    const tSign  = document.getElementById('t-sign');
+    const fLogin = document.getElementById('form-login');
+    const fSign  = document.getElementById('form-sign');
 
-    const emailEl = document.getElementById('email');
-    const passEl  = document.getElementById('password');
-    const btn     = document.getElementById('submitBtn');
-    const msg     = document.getElementById('msg');
+    tLogin.onclick = () => {
+      tLogin.classList.add('active'); tSign.classList.remove('active');
+      fLogin.style.display = '';      fSign.style.display = 'none';
+    };
+    tSign.onclick = () => {
+      tSign.classList.add('active');  tLogin.classList.remove('active');
+      fSign.style.display = '';       fLogin.style.display = 'none';
+    };
 
-    let mode = 'signin'; // 'signin' หรือ 'signup'
-
-    document.getElementById('switchLink').addEventListener('click', (e)=>{
+    // กัน submit จริง – โชว์ alert แทน (เดโม่)
+    [fLogin, fSign].forEach(f => f.addEventListener('submit', e => {
       e.preventDefault();
-      mode = mode === 'signin' ? 'signup' : 'signin';
-      btn.textContent = mode === 'signin' ? 'เข้าสู่ระบบ' : 'สมัครสมาชิก';
-      document.getElementById('switchText').textContent =
-        mode === 'signin' ? 'ยังไม่มีบัญชี? ' : 'มีบัญชีแล้ว? ';
-      e.target.textContent = mode === 'signin' ? 'สมัครสมาชิก' : 'เข้าสู่ระบบ';
-    });
-
-    btn.addEventListener('click', async ()=>{
-      msg.textContent = '';
-      msg.className = '';
-      const email = emailEl.value.trim();
-      const password = passEl.value.trim();
-      if(!email || !password){ msg.textContent = 'กรอกอีเมลและรหัสผ่านก่อนนะ'; msg.className='error'; return; }
-
-      try{
-        if(mode === 'signin'){
-          const { data, error } = await client.auth.signInWithPassword({ email, password });
-          if(error) throw error;
-          msg.textContent = 'เข้าสู่ระบบสำเร็จ กำลังไปที่แดชบอร์ด...'; msg.className='ok';
-          setTimeout(()=> location.href = 'dashboard.html', 600);
-        }else{
-          const { data, error } = await client.auth.signUp({ email, password });
-          if(error) throw error;
-          msg.textContent = 'สมัครสำเร็จ! เข้าสู่ระบบให้แล้ว กำลังไปที่แดชบอร์ด...'; msg.className='ok';
-          setTimeout(()=> location.href = 'dashboard.html', 800);
-        }
-      }catch(err){
-        msg.textContent = err.message || 'เกิดข้อผิดพลาด';
-        msg.className = 'error';
-      }
-    });
-
-    // ถ้าเข้าหน้านี้แล้วล็อกอินอยู่ ให้เด้งไปแดชบอร์ดเลย
-    (async ()=>{
-      const { data } = await client.auth.getUser();
-      if(data.user) location.replace('dashboard.html');
-    })();
+      alert('เดโม่: ยังไม่ได้เชื่อมระบบหลังบ้าน');
+      location.href = 'shop.html'; // ลองพาไปหน้าร้าน
+    }));
   </script>
 </body>
 </html>
