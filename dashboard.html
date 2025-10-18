@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>แดชบอร์ด</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    body{font-family:sans-serif;background:#0f172a;color:#e2e8f0;min-height:100dvh;padding:24px}
+    .wrap{max-width:720px;margin:0 auto}
+    .card{background:#111827;border-radius:12px;padding:18px}
+    button{padding:10px 14px;border:0;border-radius:8px;background:#fda4af;color:#111827;font-weight:700}
+    a{color:#93c5fd}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>แดชบอร์ด</h1>
+    <div class="card">
+      <p id="hello">กำลังโหลด...</p>
+      <div style="display:flex;gap:10px;margin-top:12px">
+        <button id="logoutBtn">ออกจากระบบ</button>
+        <a href="index.html">กลับหน้าแรก</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const client = supabase.createClient(
+      "https://kadrnzxpgyrnfxvmjhvv.supabase.co",
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImthZHJuenhwZ3lybmZ4dm1qaHZ2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA3NTY4ODcsImV4cCI6MjA3NjMzMjg4N30.D0AqZvFbul6FbNIC1lJbgubil0Jq8hKPwIR6gnbWdxI"
+    );
+
+    (async ()=>{
+      const { data } = await client.auth.getUser();
+      const user = data.user;
+      if(!user){
+        // ยังไม่ล็อกอิน เด้งกลับหน้า auth
+        location.replace('auth.html');
+        return;
+      }
+      document.getElementById('hello').textContent = `สวัสดี ${user.email}`;
+    })();
+
+    document.getElementById('logoutBtn').addEventListener('click', async ()=>{
+      await client.auth.signOut();
+      location.href = 'auth.html';
+    });
+  </script>
+</body>
+</html>
