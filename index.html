@@ -1,30 +1,138 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Lukashop</title>
+  <title>Lukashop • ร้านค้า</title>
+  <link rel="icon" href="data:," />
   <style>
-    :root{--bg:#0f172a;--txt:#e5e7eb;--pri:#38bdf8}
-    *{box-sizing:border-box;font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,sans-serif}
-    body{margin:0;background:var(--bg);color:var(--txt);text-align:center}
-    main{padding:80px 16px}
-    h1{font-size:32px;margin:0 0 10px}
-    p{color:#9fb0c3}
-    a.btn{display:inline-block;margin:10px;padding:10px 18px;border-radius:10px;text-decoration:none;font-weight:700}
-    .pri{background:var(--pri);color:#001825}
-    .sec{border:1px solid #27405b}
+    /* ==== Theme ==== */
+    :root{
+      --bg:#0b1220; --card:#0f172a; --line:#1f2a44;
+      --txt:#e5e7eb; --muted:#9ca3af; --pri:#38bdf8; --pri-2:#60a5fa;
+      --good:#34d399;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--txt)}
+    a{color:inherit;text-decoration:none}
+    .wrap{max-width:1100px;margin:0 auto;padding:18px}
+    /* ==== Top bar ==== */
+    .top{display:flex;align-items:center;justify-content:space-between;gap:12px}
+    .brand{display:flex;align-items:center;gap:10px;font-weight:800}
+    .brand .logo{font-size:26px}
+    .btn{display:inline-flex;align-items:center;justify-content:center;padding:12px 16px;border-radius:12px;border:1px solid var(--line);background:transparent;color:var(--txt);font-weight:700}
+    .btn.pri{background:linear-gradient(90deg,var(--pri),var(--pri-2));color:#031522;border:none}
+    .btn.ghost{background:#0b1220}
+    .btn + .btn{margin-left:10px}
+    /* ==== Hero ==== */
+    .hero{margin:24px 0;background:radial-gradient(1200px 400px at 50% -10%, #1e3a8a22, transparent), linear-gradient(#0f172a,#0b1220);border:1px solid var(--line);border-radius:18px;padding:22px}
+    .hero h1{margin:0 0 8px 0;font-size:28px}
+    .hero p{margin:0;color:var(--muted)}
+    /* ==== Stats grid ==== */
+    .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:18px}
+    .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px;min-height:140px;display:flex;flex-direction:column;justify-content:space-between}
+    .card h3{margin:0 0 6px 0;color:var(--muted);font-weight:600}
+    .num{font-size:34px;font-weight:900;letter-spacing:0.5px}
+    .badge{align-self:flex-start;margin-top:8px;background:#0b1220;border:1px solid #134e4a;color:#99f6e4;border-radius:999px;padding:4px 10px;font-size:12px}
+    .ok{color:var(--good)}
+    /* ==== CTA Row ==== */
+    .cta{margin-top:20px;display:flex;gap:10px;flex-wrap:wrap}
+    /* ==== Responsive ==== */
+    @media (max-width:1000px){.grid{grid-template-columns:repeat(2,1fr)}}
+    @media (max-width:560px){.grid{grid-template-columns:1fr}}
   </style>
+  <!-- ถ้าอยากดึงตัวเลขจาก Supabase ให้เปิดสคริปต์นี้ และดูโค้ดส่วนล่าง -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
-  <main>
-    <div style="font-size:46px">👾</div>
-    <h1>ยินดีต้อนรับสู่ Lukashop</h1>
-    <p>เว็บขายไอดีเกมและสินค้าดิจิทัล (เดโม่)</p>
-    <div>
-      <a class="btn sec" href="auth.html">เข้าสู่ระบบ / สมัครสมาชิก</a>
-      <a class="btn pri" href="shop.html">ดูสินค้า</a>
+  <div class="wrap">
+    <!-- Top bar -->
+    <div class="top">
+      <div class="brand"><span class="logo">👾</span> <span>Lukashop</span></div>
+      <div>
+        <a href="auth.html" class="btn ghost">เข้าสู่ระบบ / สมัครสมาชิก</a>
+        <a href="shop.html" class="btn pri">ดูสินค้า</a>
+      </div>
     </div>
-  </main>
+
+    <!-- Hero -->
+    <div class="hero">
+      <h1>ร้านไอดีเกม & สินค้าเติมเงิน • บริการไว เชื่อถือได้</h1>
+      <p>ทดลองระบบ UI – ยังไม่เชื่อมต่อชำระเงินจริง</p>
+    </div>
+
+    <!-- Stats -->
+    <div class="grid">
+      <div class="card">
+        <h3>สมาชิก</h3>
+        <div class="num" data-target="52591" id="n-members">0</div>
+        <div class="badge">อัปเดตล่าสุด</div>
+      </div>
+      <div class="card">
+        <h3>สินค้า</h3>
+        <div class="num" data-target="76" id="n-products">0</div>
+        <div class="badge">พร้อมสั่งซื้อ</div>
+      </div>
+      <div class="card">
+        <h3>พร้อมส่ง</h3>
+        <div class="num ok" data-target="1025" id="n-ready">0</div>
+        <div class="badge">สต๊อกพร้อม</div>
+      </div>
+      <div class="card">
+        <h3>จำหน่าย</h3>
+        <div class="num" data-target="31191" id="n-sold">0</div>
+        <div class="badge">ยอดขายสะสม</div>
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <div class="cta">
+      <a href="shop.html" class="btn pri">เริ่มเลือกสินค้า</a>
+      <a href="cart.html" class="btn ghost">ดูตะกร้า (เดโม)</a>
+      <a href="auth.html" class="btn ghost">เข้าสู่ระบบ</a>
+    </div>
+  </div>
+
+  <script>
+    // ====== เอฟเฟกต์เลขไล่ขึ้น (เดโม) ======
+    function countUp(el, target, ms=900){
+      const start = 0;
+      const steps = Math.max(20, Math.floor(ms/16));
+      let i = 0;
+      const timer = setInterval(()=>{
+        i++;
+        const val = Math.floor(start + (target-start)*(i/steps));
+        el.textContent = val.toLocaleString('th-TH');
+        if(i>=steps){ el.textContent = Number(target).toLocaleString('th-TH'); clearInterval(timer); }
+      }, 16);
+    }
+    document.querySelectorAll('.num').forEach(n=>{
+      countUp(n, Number(n.dataset.target));
+    });
+
+    /* ===== (ทางเลือก) ดึงตัวเลขจาก Supabase =====
+       1) สร้างตารางชื่อ stats มีคอลัมน์:
+          id (int, pk), members (int), products (int), ready (int), sold (int)
+          ใส่ค่าตัวอย่างสัก 1 แถว
+       2) เปิดคีย์ของนายด้านล่าง แล้วแทนค่า SUPABASE_URL/ANON_KEY
+       3) เอาคอมเมนต์บล็อกนี้ออก แล้วตัวเลขจะมาจากฐานข้อมูลแทนเดโม
+    */
+
+    /*
+    const SUPABASE_URL = "https://kadrnzxpgyrnfxvmjhvv.supabase.co";
+    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImthZHJuenhwZ3lybmZ4dm1qaHZ2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA3NTY4ODcsImV4cCI6MjA3NjMzMjg4N30.D0AqZvFbul6FbNIC1lJbgubil0Jq8hKPwIR6gnbWdxI";
+    const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    (async () => {
+      const { data, error } = await sb.from('stats').select('*').limit(1).single();
+      if(!error && data){
+        countUp(document.getElementById('n-members'), data.members);
+        countUp(document.getElementById('n-products'), data.products);
+        countUp(document.getElementById('n-ready'),   data.ready);
+        countUp(document.getElementById('n-sold'),    data.sold);
+      }
+    })();
+    */
+  </script>
 </body>
 </html>
