@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>เข้าสู่ระบบ / สมัครสมาชิก</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    body{font-family:sans-serif;background:#0f172a;color:#e2e8f0;display:flex;min-height:100dvh;align-items:center;justify-content:center}
+    .card{background:#111827;padding:24px 20px;border-radius:12px;max-width:420px;width:92%}
+    h1{margin:0 0 12px;color:#93c5fd}
+    label{display:block;margin:10px 0 4px}
+    input{width:100%;padding:10px;border-radius:8px;border:1px solid #334155;background:#0b1220;color:#e2e8f0}
+    button{margin-top:14px;width:100%;padding:12px;border:0;border-radius:10px;background:#38bdf8;color:#0b1220;font-weight:700}
+    .alt{margin-top:10px;text-align:center}
+    a{color:#93c5fd}
+    .error{color:#fca5a5;margin-top:8px}
+    .ok{color:#86efac;margin-top:8px}
+    .switch{margin-top:10px;font-size:14px;text-align:center}
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>เข้าสู่ระบบ / สมัครสมาชิก</h1>
+    <p style="margin:0 0 14px">กรอกอีเมลและรหัสผ่านของคุณ</p>
+
+    <label>อีเมล</label>
+    <input id="email" type="email" placeholder="you@email.com" />
+
+    <label>รหัสผ่าน</label>
+    <input id="password" type="password" placeholder="อย่างน้อย 6 ตัวอักษร" />
+
+    <button id="submitBtn">เข้าสู่ระบบ</button>
+
+    <div id="msg"></div>
+
+    <div class="switch">
+      <span id="switchText">ยังไม่มีบัญชี? </span>
+      <a href="#" id="switchLink">สมัครสมาชิก</a>
+    </div>
+
+    <div class="alt">
+      <a href="index.html">← กลับหน้าแรก</a>
+    </div>
+  </div>
+
+  <script>
+    const SUPABASE_URL = "https://kadrnzxpgyrnfxvmjhvv.supabase.co";
+    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImthZHJuenhwZ3lybmZ4dm1qaHZ2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA3NTY4ODcsImV4cCI6MjA3NjMzMjg4N30.D0AqZvFbul6FbNIC1lJbgubil0Jq8hKPwIR6gnbWdxI";
+    const client = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    const emailEl = document.getElementById('email');
+    const passEl  = document.getElementById('password');
+    const btn     = document.getElementById('submitBtn');
+    const msg     = document.getElementById('msg');
+
+    let mode = 'signin'; // 'signin' หรือ 'signup'
+
+    document.getElementById('switchLink').addEventListener('click', (e)=>{
+      e.preventDefault();
+      mode = mode === 'signin' ? 'signup' : 'signin';
+      btn.textContent = mode === 'signin' ? 'เข้าสู่ระบบ' : 'สมัครสมาชิก';
+      document.getElementById('switchText').textContent =
+        mode === 'signin' ? 'ยังไม่มีบัญชี? ' : 'มีบัญชีแล้ว? ';
+      e.target.textContent = mode === 'signin' ? 'สมัครสมาชิก' : 'เข้าสู่ระบบ';
+    });
+
+    btn.addEventListener('click', async ()=>{
+      msg.textContent = '';
+      msg.className = '';
+      const email = emailEl.value.trim();
+      const password = passEl.value.trim();
+      if(!email || !password){ msg.textContent = 'กรอกอีเมลและรหัสผ่านก่อนนะ'; msg.className='error'; return; }
+
+      try{
+        if(mode === 'signin'){
+          const { data, error } = await client.auth.signInWithPassword({ email, password });
+          if(error) throw error;
+          msg.textContent = 'เข้าสู่ระบบสำเร็จ กำลังไปที่แดชบอร์ด...'; msg.className='ok';
+          setTimeout(()=> location.href = 'dashboard.html', 600);
+        }else{
+          const { data, error } = await client.auth.signUp({ email, password });
+          if(error) throw error;
+          msg.textContent = 'สมัครสำเร็จ! เข้าสู่ระบบให้แล้ว กำลังไปที่แดชบอร์ด...'; msg.className='ok';
+          setTimeout(()=> location.href = 'dashboard.html', 800);
+        }
+      }catch(err){
+        msg.textContent = err.message || 'เกิดข้อผิดพลาด';
+        msg.className = 'error';
+      }
+    });
+
+    // ถ้าเข้าหน้านี้แล้วล็อกอินอยู่ ให้เด้งไปแดชบอร์ดเลย
+    (async ()=>{
+      const { data } = await client.auth.getUser();
+      if(data.user) location.replace('dashboard.html');
+    })();
+  </script>
+</body>
+</html>
