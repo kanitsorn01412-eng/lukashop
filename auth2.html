@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Lukashop • เข้าสู่ระบบ</title>
+  <style>
+    :root{--bg:#0f172a;--card:#111827;--txt:#e5e7eb;--muted:#94a3b8;--pri:#38bdf8}
+    *{box-sizing:border-box;font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,sans-serif}
+    body{margin:0;background:var(--bg);color:var(--txt)}
+    header{background:#0b1220;border-bottom:1px solid #1f2937;position:sticky;top:0}
+    .nav{max-width:980px;margin:auto;padding:12px 16px;display:flex;align-items:center;gap:12px}
+    .nav b{font-size:18px}
+    .spacer{flex:1}
+    .wrap{max-width:400px;margin:50px auto;padding:0 16px}
+    .card{background:var(--card);border:1px solid #1f2937;border-radius:14px;padding:20px;text-align:center}
+    .tabs{display:flex;border-bottom:1px solid #1f2937;margin-bottom:16px}
+    .tab{flex:1;padding:10px;border-radius:8px 8px 0 0;cursor:pointer;font-weight:700}
+    .active{background:var(--pri);color:#001825}
+    input{width:100%;margin:8px 0;padding:10px;border-radius:10px;border:1px solid #263244;background:#0b1220;color:var(--txt)}
+    .btn{width:100%;margin-top:10px;padding:10px 12px;border-radius:10px;background:var(--pri);color:#001825;font-weight:800;border:0}
+    .muted{color:var(--muted);font-size:14px}
+    a{color:#38bdf8;text-decoration:none}
+  </style>
+</head>
+<body>
+<header>
+  <div class="nav">
+    <div>👾</div><b>Lukashop</b>
+    <div class="spacer"></div>
+    <a href="index.html" style="color:#94a3b8;font-size:14px">กลับหน้าหลัก</a>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="card">
+    <div class="tabs">
+      <div id="tab-login" class="tab active">เข้าสู่ระบบ</div>
+      <div id="tab-register" class="tab">สมัครสมาชิก</div>
+    </div>
+
+    <form id="form-login">
+      <input type="email" placeholder="อีเมล" required />
+      <input type="password" placeholder="รหัสผ่าน" required />
+      <button class="btn">เข้าสู่ระบบ</button>
+      <p class="muted">* ตัวอย่าง UI เท่านั้น ยังไม่เชื่อมต่อหลังบ้าน</p>
+    </form>
+
+    <form id="form-register" style="display:none">
+      <input type="text" placeholder="ชื่อผู้ใช้" required />
+      <input type="email" placeholder="อีเมล" required />
+      <input type="password" placeholder="รหัสผ่าน" required />
+      <button class="btn">สมัครสมาชิก</button>
+      <p class="muted">* ตัวอย่าง UI เท่านั้น ยังไม่เชื่อมต่อหลังบ้าน</p>
+    </form>
+  </div>
+</div>
+
+<script>
+  const tabLogin=document.getElementById('tab-login');
+  const tabRegister=document.getElementById('tab-register');
+  const formLogin=document.getElementById('form-login');
+  const formRegister=document.getElementById('form-register');
+
+  tabLogin.onclick=()=>{ 
+    tabLogin.classList.add('active'); tabRegister.classList.remove('active');
+    formLogin.style.display='block'; formRegister.style.display='none';
+  };
+  tabRegister.onclick=()=>{ 
+    tabRegister.classList.add('active'); tabLogin.classList.remove('active');
+    formLogin.style.display='none'; formRegister.style.display='block';
+  };
+</script>
+</body>
+</html>
